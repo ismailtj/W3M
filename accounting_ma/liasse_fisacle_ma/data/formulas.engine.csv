@@ -1,0 +1,593 @@
+"id","field_id/id","date_field_id/id","sql_date","python_code","sql_code","description","exercice","field_list","computation_mode","name","model_id/id","is_matrix"
+"__export__.formule_1","account.field_account_move_line__debit","account.field_account_move_line__date","","","","","Exercice N","","Somme (sum)","Somme débit N","account.model_account_move_line","False"
+"__export__.formule_2","account.field_account_move_line__credit","account.field_account_move_line__date","","","","","Exercice N","","Somme (sum)","Somme crédit N","account.model_account_move_line","False"
+"__export__.formule_3","account.field_account_move_line__debit","account.field_account_move_line__date","","","","","Exercice N-1","","Somme (sum)","Somme débit N-1","account.model_account_move_line","False"
+"__export__.formule_4","account.field_account_move_line__credit","account.field_account_move_line__date","","","","","Exercice N-1","","Somme (sum)","Somme crédit N-1","account.model_account_move_line","False"
+"__export__.formule_5","","","","fy = env[""date.range""].browse(ex_n)
+st_date = str(fy.date_start).split('-')
+st_date.reverse()
+end_date = str(fy.date_end).split('-')
+end_date.reverse()
+result = ""Exercice :  "" + str(""-"".join(st_date)) + ""  -  "" +  str(""-"".join(end_date))","","","","","Code Python","Date du au","","False"
+"__export__.formulas_engine_24","","","","","","","Exercice N","['name','date_premiere_echeance','duuree_contrat','valeur_estimee','duuree_theorique','cumul_redevance','montant_redevance','redevance_restant_moins','redevance_restant_plus','prix_achat_fin_contrat','observations']","Nombre (count) / Matrice (matrice doit etre coche)","Tableau Credit bail","liasse_fiscale_tables.model_credit_bail_line","True"
+"__export__.formulas_engine_25","","","","","","","Exercice N","['name','secteur_activite','capital_social','participation_capital','prix_acquisition','valeur_comptable_nette','date_cloture','situation_nette','resultat_net','produits_inscrits']","Nombre (count) / Matrice (matrice doit etre coche)","Tableau titre de participation","liasse_fiscale_tables.model_titre_participation_line","True"
+"__export__.formulas_engine_26","","","","","","","Exercice N","['name','n_if','n_cin','adresse','nbre_titre_exe_prec','nbre_titre_exe_actuel','valeur_nominal','montant_capital_souscrit','montant_capital_appele','montant_capital_libere']","Nombre (count) / Matrice (matrice doit etre coche)","Tableau repartition capital social","liasse_fiscale_tables.model_repartition_capital_social_line","True"
+"__export__.formulas_engine_27","","","","","","","Exercice N","['name','adresse','cin','montant_pret','date_pret','duree_pret','taux_interet','charge_financiere','remboursement_exercice_ant_principal','remboursement_exercice_ant_intertet','remboursement_exercice_actuel_principal','remboursement_exercice_actuel_intertet','observations','type']","Nombre (count) / Matrice (matrice doit etre coche)","Tableau interet emprunt contracte","liasse_fiscale_tables.model_interets_emprunts_line","True"
+"__export__.formulas_engine_28","","","","company = env.user.company_id
+result = company.name","","","","","Code Python","raison sociale","","False"
+"__export__.formulas_engine_29","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search(domain)
+res = 0
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      acquisition_date = datetime.datetime.strptime(acquisition.invoice_date, '%Y-%m-%d')     
+      if acquisition_date.year == fy_date.year and not acquisition.date_cession:
+                          res = res + acquisition.value
+result = res","","","","","Code Python","Tableau immobilisations acquisition (T4)","","False"
+"__export__.formulas_engine_30","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search(domain)
+res = 0
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date= datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if cession_date.year == fy_date.year and acquisition.date_cession:
+                          res = res + acquisition.value
+result = res","","","","","Code Python","Tableau immobilisations retrait (T4)","","False"
+"__export__.formulas_amortis_1","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '211' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2811' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d8","","False"
+"__export__.formulas_amortis_2","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '212' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2812' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d9","","False"
+"__export__.formulas_amortis_3","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '213' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2813' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d10","","False"
+"__export__.formulas_amortis_6","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '221' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2821' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d13","","False"
+"__export__.formulas_amortis_7","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '222' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2822' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d14","","False"
+"__export__.formulas_amortis_8","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '223' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2823' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d15","","False"
+"__export__.formulas_amortis_9","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '228' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2828' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d16","","False"
+"__export__.formulas_amortis_12","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '231' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2831' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d19","","False"
+"__export__.formulas_amortis_13","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '232' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2832' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d20","","False"
+"__export__.formulas_amortis_14","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '233' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2833' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d21","","False"
+"__export__.formulas_amortis_15","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '234' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2834' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d22","","False"
+"__export__.formulas_amortis_16","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '235' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2835' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d23","","False"
+"__export__.formulas_amortis_17","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '238' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2838' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d24","","False"
+"__export__.formulas_amortis_18","","","","fy = env[""date.range""].browse(ex_n)
+
+acquisition_ids=env[""account.asset.asset""].search([(""date_cession"", ""!="", False)])
+res = 0
+
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+for acquisition in acquisition_ids:
+      cession_date = datetime.datetime.strptime(acquisition.date_cession, '%Y-%m-%d')     
+      if acquisition.category_id.account_asset_id.code.startswith( '239' ) and cession_date.year == fy_date.year:
+                          move_line_ids = acquisition.vna_move_id.line_ids
+                          for move_line in move_line_ids:
+                                   if move_line.account_id.code.startswith( '2839' ):
+                                               res = res + move_line.debit
+result = res","","","Exercice N","","Code Python","amortis_d25","","False"
+"__export__.formulas_engine_153","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision1d","","False"
+"__export__.formulas_engine_154","","","","provision1c=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1c.dotation_exploitation
+","","","Exercice N","","Code Python","provision1c","","False"
+"__export__.formulas_engine_155","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision3d","","False"
+"__export__.formulas_engine_156","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision1e","","False"
+"__export__.formulas_engine_157","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision1f","","False"
+"__export__.formulas_engine_158","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision1g","","False"
+"__export__.formulas_engine_159","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision2b","","False"
+"__export__.formulas_engine_160","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_exploitation
+","","","Exercice N","","Code Python","provision2c","","False"
+"__export__.formulas_engine_161","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision2d","","False"
+"__export__.formulas_engine_162","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision2e","","False"
+"__export__.formulas_engine_163","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision2f","","False"
+"__export__.formulas_engine_164","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision2g","","False"
+"__export__.formulas_engine_165","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""2""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision2h","","False"
+"__export__.formulas_engine_166","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision3b","","False"
+"__export__.formulas_engine_167","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_exploitation
+","","","Exercice N","","Code Python","provision3c","","False"
+"__export__.formulas_engine_168","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision4b","","False"
+"__export__.formulas_engine_169","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision5b","","False"
+"__export__.formulas_engine_170","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision6b","","False"
+"__export__.formulas_engine_171","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_exploitation
+","","","Exercice N","","Code Python","provision4c","","False"
+"__export__.formulas_engine_172","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_exploitation
+","","","Exercice N","","Code Python","provision5c","","False"
+"__export__.formulas_engine_173","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_exploitation
+","","","Exercice N","","Code Python","provision6c","","False"
+"__export__.formulas_engine_174","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision4d","","False"
+"__export__.formulas_engine_175","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision5d","","False"
+"__export__.formulas_engine_176","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_financiere
+","","","Exercice N","","Code Python","provision6d","","False"
+"__export__.formulas_engine_177","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.montant_debut
+","","","Exercice N","","Code Python","provision1b","","False"
+"__export__.formulas_engine_178","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision3e","","False"
+"__export__.formulas_engine_179","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision4e","","False"
+"__export__.formulas_engine_180","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision5e","","False"
+"__export__.formulas_engine_181","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.dotation_non_courante
+","","","Exercice N","","Code Python","provision6e","","False"
+"__export__.formulas_engine_182","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision3f","","False"
+"__export__.formulas_engine_183","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision4f","","False"
+"__export__.formulas_engine_184","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision5f","","False"
+"__export__.formulas_engine_185","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_exploitation
+","","","Exercice N","","Code Python","provision6f","","False"
+"__export__.formulas_engine_186","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision3g","","False"
+"__export__.formulas_engine_187","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision4g","","False"
+"__export__.formulas_engine_188","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision5g","","False"
+"__export__.formulas_engine_189","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_financiere
+","","","Exercice N","","Code Python","provision6g","","False"
+"__export__.formulas_engine_190","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""3""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision3h","","False"
+"__export__.formulas_engine_191","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""4""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision4h","","False"
+"__export__.formulas_engine_192","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""5""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision5h","","False"
+"__export__.formulas_engine_193","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""6""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision6h","","False"
+"__export__.formulas_engine_194","","","","provision1=env[""provisions.line""].search([(""code"", ""="", ""1""),(""provisions_id.fy_n_id.id"",""="",ex_n)])
+result = provision1.reprises_non_courante
+","","","Exercice N","","Code Python","provision1h","","False"
+"__export__.formulas_engine_31","","","","fy = env[""date.range""].browse(ex_n)
+fy_date = datetime.datetime.strptime(str(fy.date_end), '%Y-%m-%d')
+immos = env['account.asset.asset'].search([(""date_cession"",""!="",False)])
+res = []
+for immo in immos:
+    if datetime.datetime.strptime(str(immo.date_cession), '%Y-%m-%d').year == fy_date.year:
+        amount_brut = 0
+        amount_amo = 0
+        plus_value = 0
+        moins_value = 0
+        move_line_ids = immo.vna_move_id.line_ids
+        for move_line in move_line_ids:
+                if move_line.account_id == immo.category_id.account_asset_id:
+                    amount_brut += move_line.credit
+                if move_line.account_id == immo.category_id.account_depreciation_id:
+                    amount_amo +=  move_line.debit
+        if immo.sold_amount > (amount_brut - amount_amo):
+            plus_value = immo.sold_amount - (amount_brut - amount_amo)
+        else:
+            moins_value =  -immo.sold_amount + (amount_brut - amount_amo)
+        data = {
+            'date':immo.date_cession,
+            'account':immo.category_id.account_asset_id.code,
+            'amount_brut':amount_brut,
+            'amount_amo':amount_amo,
+            'amount_net':amount_brut - amount_amo,
+            'amount_prod':immo.sold_amount,
+            'plus_value':plus_value,
+            'moins_value':moins_value
+            }
+        res.append(data)
+result = res","","","","['date','account','amount_brut','amount_amo','amount_net','amount_prod','plus_value','moins_value']","Code Python","Plus au moins values","","True"
+"__export__.formulas_engine_22","","","","company = env.user.company_id
+result = company.partner_id.capital_social","","","","","Code Python","capital","","False"
+"__export__.formulas_engine_504","","","","ari1=env[""affectation.resultats.intervenue.line1""].search(domain)
+result = ari1.montant
+","","","Exercice N","","Code Python","ari1","","False"
+"__export__.formulas_engine_505","","","","ari2=env[""affectation.resultats.intervenue.line2""].search(domain)
+result = ari2.montant
+","","","Exercice N","","Code Python","ari2","","False"
+"__export__.formulas_engine_n_1_505","","","","ari2=env[""affectation.resultats.intervenue.line2""].search(domain)
+result = ari2.montant
+","","","Exercice N-1","","Code Python","ari(n-1)","","False"
+"__export__.formulas_engine_784","","","","res=env[""calcul.impot.line""].search(domain)
+result = res.ens_produit
+","","","Exercice N","","Code Python","calcul_ens_prod","","False"
+"__export__.formulas_engine_805","","","","res=env[""calcul.impot.line""].search(domain)
+result = res.ens_produit_base_imposable
+","","","Exercice N","","Code Python","calcul_ens_produit_base_imposable","","False"
+"__export__.formulas_engine_831","","","","res=env[""calcul.impot.line""].search(domain)
+result = res.ens_produit_numerateur_taxable
+","","","Exercice N","","Code Python","calcul_ens_produit_numerateur_taxable","","False"
+"__export__.formulas_engine_216","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.valeur_apport","","","Exercice N","","Code Python","plus_value_valeur_apport","","False"
+"__export__.formulas_engine_217","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.valeur_nette_comptable","","","Exercice N","","Code Python","plus_value_valeur_nette_comptable","","False"
+"__export__.formulas_engine_218","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.plus_value_constatee","","","Exercice N","","Code Python","plus_value_plus_value_constatee","","False"
+"__export__.formulas_engine_219","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.fraction_exercice_ant","","","Exercice N","","Code Python","plus_value_fraction_exercice_ant","","False"
+"__export__.formulas_engine_220","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.fraction_exercice_actuel","","","Exercice N","","Code Python","plus_value_fraction_exercice_actuel","","False"
+"__export__.formulas_engine_221","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.cumul_plus_value_rapportee","","","Exercice N","","Code Python","plus_value_cumul_plus_value_rapportee","","False"
+"__export__.formulas_engine_222","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.solde_plus_value_non_rapportee","","","Exercice N","","Code Python","plus_value_solde_plus_value_non_rapportee","","False"
+"__export__.formulas_engine_223","","","","pv1=env[""plus.values.fusion.line""].search(domain)
+result = pv1.observations","","","Exercice N","","Code Python","plus_value_observations","","False"
+"__export__.formulas_engine_260","","","","","","","Exercice N","['name','lieu_situation','nom_prenom','date_conclusion','montant_annuel','montant_loyer','nature_contrat_bail','nature_contrat_period']","Nombre (count) / Matrice (matrice doit etre coche)","Tableau des locations et des baux","liasse_fiscale_tables.model_locations_baux_line","True"
+"__export__.formulas_engine_208","","","","stb=env[""detail.stock.line""].search(domain)
+result = stb.montant_brut_stock_final","","","Exercice N","","Code Python","stock_montant_brut_stock_final","","False"
+"__export__.formulas_engine_230","","","","stc=env[""detail.stock.line""].search(domain)
+result = stc.provisions_stock_final","","","Exercice N","","Code Python","stock_provisions_stock_final","","False"
+"__export__.formulas_engine_251","","","","std=env[""detail.stock.line""].search(domain)
+result = std.montant_net_stock_final","","","Exercice N","","Code Python","stock_montant_net_stock_final","","False"
+"__export__.formulas_engine_272","","","","ste=env[""detail.stock.line""].search(domain)
+result = ste.montant_brut_stock_initial","","","Exercice N","","Code Python","stock_montant_brut_stock_initial","","False"
+"__export__.formulas_engine_293","","","","stf=env[""detail.stock.line""].search(domain)
+result = stf.provisions_stock_initial","","","Exercice N","","Code Python","stock_provisions_stock_initial","","False"
+"__export__.formulas_engine_314","","","","stg=env[""detail.stock.line""].search(domain)
+result = stg.montant_net_stock_initial","","","Exercice N","","Code Python","stock_montant_net_stock_initial","","False"
+"__export__.formulas_engine_232","","","","
+fy = env[""date.range""].browse(ex_n)
+immos = env['account.asset.asset'].search([('date','<=',fy.date_end),('state','!=','draft')])
+res = []
+row=1
+for immo in immos:
+				prev_amo = immo.salvage_value
+				current_amo = 0
+				lenth = len(immo.depreciation_line_ids)
+				percent = round((100/(immo.method_number or lenth or 1.0))*12/(immo.method_period or 12),2)
+				dep_lines = immo.depreciation_line_ids.filtered(lambda r: r.move_check)
+				prev_amo = sum(line.amount for line in dep_lines.filtered(lambda r: r.depreciation_date < fy.date_start))
+				current_amo = sum(line.amount for line in dep_lines.filtered(lambda r: r.depreciation_date >= fy.date_start and r.depreciation_date <=fy.date_end and r.move_id and r.move_id.state=='posted'))
+				
+				data = {
+            '0':row,
+            '1':immo.date,
+            '2':immo.value,
+            '3':immo.reeval_value,
+            '4':prev_amo,
+            '5':percent,
+            '6':round(immo.method_number*(immo.method_period or 12)/12,2),
+            '7':current_amo,
+            '8':current_amo+prev_amo,
+            '9':immo.observations or """",
+            '10':immo.category_id.account_asset_id.name,
+            }
+				res.append(data)
+				row+=1
+result = res","","","","['0','1','2','3','4','5','6','7','8','9','10']","Code Python","DOTATIONS AUX AMORTISSEMENTS","","True"
+"__export__.formulas_engine_233","","","","immos = env['account.asset.asset'].search([])
+dotation = 0
+fy = env[""date.range""].browse(ex_n)
+res = []
+for immo in immos:
+    prev_amo = 0
+    current_amo = 0
+    for dep_line in immo.depreciation_line_ids:
+        if dep_line.move_id.state == 'posted':
+            if dep_line.depreciation_date < fy.date_start:
+                dotation += dep_line.amount
+            if (dep_line.depreciation_date >= fy.date_start) and (dep_line.depreciation_date <= fy.date_end):
+                dotation += dep_line.amount
+result = dotation","","","Exercice N","","Code Python","Total dotation","","False"
+"__export__.formulas_engine_234","","","","fy = env[""date.range""].browse(ex_n)
+result ="" "" + str(fy.date_start) + ""  -  "" +  str(fy.date_end)","","","","","Code Python","Exercice du au","","False"
+"__export__.formulas_engine_235","","","","move_line_ids =env[""account.move.line""].search([(""account_id"", ""=like"", ""3421%"")])
+result = move_line_ids","","","Exercice N","","Code Python","Test accounting entries","","False"
+"__export__.formulas_engine_236","","","","move_line_ids =env[""account.move.line""].search([(""account_id"", ""=like"", ""28%"")])
+result = move_line_ids","","","","","Code Python","Ecr Dep GL","","False"
+"__export__.formulas_engine_237","","","","move_line_ids =env[""account.move.line""].search([(""account_id"", ""=like"", ""28%""),('move_id.asset_id','!=',False)])
+result = move_line_ids","","","","","Code Python","Dep immo","","False"
+"__export__.formulas_engine_238","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_E17 = line_obj.search([('cell','=','E17'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E18 = line_obj.search([('cell','=','E18'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E19 = line_obj.search([('cell','=','E19'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E20 = line_obj.search([('cell','=','E20'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_E17 + cell_E18 - cell_E19 - cell_E20 < 0:
+    res = cell_E17 + cell_E18 - cell_E19 - cell_E20
+result = res
+
+","","","","","Code Python","'=IF(+E17+E18-E19-E20<0,+E17+E18-E19-E20,0) (E22) ESG","","False"
+"__export__.formulas_engine_239","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_E17 = line_obj.search([('cell','=','E17'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E18 = line_obj.search([('cell','=','E18'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E19 = line_obj.search([('cell','=','E19'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_E20 = line_obj.search([('cell','=','E20'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_E17 + cell_E18 - cell_E19 - cell_E20 > 0:
+    res = cell_E17 + cell_E18 - cell_E19 - cell_E20
+result = res
+
+","","","","","Code Python","'=IF(+E17+E18-E19-E20>0,+E17+E18-E19-E20,0) (ESG E21)","","False"
+"__export__.formulas_engine_240","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_E30 = line_obj.search([('cell','=','E32'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_E30 < 0:
+    res = -cell_E30
+result = res
+
+
+","","","","","Code Python","ESG =IF(E32<0,-E32,0) (E39)","","False"
+"__export__.formulas_engine_241","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_E32 = line_obj.search([('cell','=','E32'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_E32 > 0:
+    res = cell_E32
+result = res","","","","","Code Python","ESG =IF(E32>0,E32,0) (E38)","","False"
+"__export__.formulas_engine_242","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_F17 = line_obj.search([('cell','=','F17'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F18 = line_obj.search([('cell','=','F18'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F19 = line_obj.search([('cell','=','F19'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F20 = line_obj.search([('cell','=','F20'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_F17 + cell_F18 - cell_F19 - cell_F20 > 0:
+    res = cell_F17 + cell_F18 - cell_F19 - cell_F20
+result = res
+
+","","","","","Code Python","'=IF(+F17+F18-F19-F20>0,+F17+F18-F19-F20,0) (F21) ESG","","False"
+"__export__.formulas_engine_243","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_F17 = line_obj.search([('cell','=','F17'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F18 = line_obj.search([('cell','=','F18'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F19 = line_obj.search([('cell','=','F19'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+cell_F20 = line_obj.search([('cell','=','F20'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_F17 + cell_F18 - cell_F19 - cell_F20 < 0:
+    res = cell_F17 + cell_F18 - cell_F19 - cell_F20
+result = res
+
+","","","","","Code Python","'=IF(+F17+F18-F19-F20<0,+F17+F18-F19-F20,0) (F22) ESG","","False"
+"__export__.formulas_engine_244","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_F32 = line_obj.search([('cell','=','F32'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_F32 > 0:
+    res = cell_F32
+result = res","","","","","Code Python","ESG =IF(F32>0,F32,0) (F38)","","False"
+"__export__.formulas_engine_245","","","","report_id = env['report.engin'].search([('name','=','ESG')])[0]
+line_obj = env['report.engin.line']
+res = 0
+cell_F32 = line_obj.search([('cell','=','F32'),('report_id','=',report_id.id)])[0].get_cell_value()[0]
+if cell_F32 < 0:
+    res = -cell_F32
+result = res
+
+
+","","","","","Code Python","ESG =IF(F32<0,-F32,0) (F39)","","False"
+"__export__.formulas_engine_246","","","","fy = env[""date.range""].browse(ex_n)
+result = str(fy.date_end)","","","Exercice N","","Code Python","Date fin","","False"
+"__export__.formulas_engine_248","","","","fy = env[""date.range""].browse(ex_n)
+result = str(fy.date_start)","","","Exercice N","","Code Python","Date debut","","False"
+"__export__.formulas_engine_249","","","","immos = env['account.asset.asset'].search([])
+fy = env[""date.range""].browse(ex_n)
+res = 0
+for immo in immos:
+    prev_amo = 0
+    current_amo = 0
+    for dep_line in immo.depreciation_line_ids:
+        if dep_line.move_id.state == 'posted':
+            if dep_line.depreciation_date < fy.date_start:
+                prev_amo += dep_line.amount
+            if (dep_line.depreciation_date >= fy.date_start) and (dep_line.depreciation_date <= fy.date_end):
+                current_amo += dep_line.amount
+
+    res += current_amo
+result = res","","","","","Code Python","DOTATIONS AUX AMORTISSEMENTS (Total)","","False"

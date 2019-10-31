@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_plus_values_fusion_form" model="ir.ui.view">
+	    <field name="name">view.plus.values.fusion.form</field>
+	    <field name="model">plus.values.fusion</field>
+	    <field name="arch" type="xml">
+	        <form string="PLUS-VALUES CONSTATEES EN CAS DE FUSION">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="plus_values_fusion_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="valeur_apport"/>
+									<field name="valeur_nette_comptable"/>
+									<field name="plus_value_constatee"/>
+									<field name="fraction_exercice_ant"/>
+									<field name="fraction_exercice_actuel"/>
+									<field name="cumul_plus_value_rapportee"/>
+									<field name="solde_plus_value_non_rapportee"/>
+									<field name="observations"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_plus_values_fusion_tree" model="ir.ui.view">
+	    <field name="name">view.plus.values.fusion.tree</field>
+	    <field name="model">plus.values.fusion</field>
+	    <field name="arch" type="xml">
+	        <tree string="PLUS-VALUES CONSTATEES EN CAS DE FUSION">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_plus_values_fusion" model="ir.actions.act_window">
+	    <field name="name">PLUS-VALUES CONSTATEES EN CAS DE FUSION</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">plus.values.fusion</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_plus_values_fusion_id" parent="menu_tables_root" action="action_plus_values_fusion" />
+</odoo>

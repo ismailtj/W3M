@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_liasse_passage_form" model="ir.ui.view">
+	    <field name="name">view.liasse.passage.form</field>
+	    <field name="model">liasse.passage</field>
+	    <field name="arch" type="xml">
+	        <form string="Passage">
+				<group>
+                    <group colspan="4">
+                        <field name="name"/>
+                        <field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+                    </group>
+					<group string="I. RESULTAT NET COMPTABLE">
+						<field name="benifice_net_1"/>
+						<field name="perte_nette_1"/>
+					</group>
+					<group string="IV. RESULTAT BRUT FISCAL">
+						<field name="benifice_brut_1"/>
+						<field name="deficit_brut_1"/>
+					</group>
+                    <group string="V. REPORTS DEFICITAIRES IMPUTES (C)">
+                        <field name="exercice_n_4"/>
+                        <field name="exercice_n_3"/>
+                        <field name="exercice_n_2"/>
+                        <field name="exercice_n_1"/>
+                        <field name="amortissement"/>
+                    </group>
+                    <group string="VI. RESULTAT NET FISCAL">
+						<field name="benifice_net_a_c_1"/>
+						<field name="deficit_net_b_1"/>
+                    </group>
+                    <group string="VII. CUMUL DES AMORTISSEMENTS FISCALEMENT DIFFERES">
+                        <field name="amortissement_1" nolabel="1"/>
+                    </group>
+                    <group string="VIII. CUMUL DES DEFICITS FISCAUX RESTANT A REPORTER">
+						<field name="exercice_n_4_1_c"/>
+						<field name="exercice_n_3_1_c"/>
+						<field name="exercice_n_2_1_c"/>
+						<field name="exercice_n_1_1_c"/>
+                    </group>
+					<notebook colspan="4">
+						<page string="II. REINTEGRATIONS FISCALES COURANTE">
+							<field name="re_fy_courante_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="name"/>
+									<field name="montant_1"/>
+								</tree>
+							</field>
+						</page>
+                        <page string="II. REINTEGRATIONS FISCALES NON COURANTE">
+							<field name="re_fy_non_courante_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="name"/>
+									<field name="montant_1"/>
+								</tree>
+							</field>
+						</page>
+                        <page string="III. DEDUCTIONS FISCALES COURANTE">
+							<field name="de_fy_courante_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="name"/>
+									<field name="montant_1"/>
+								</tree>
+							</field>
+						</page>
+                        <page string="III. DEDUCTIONS FISCALES NON COURANTE">
+							<field name="de_fy_non_courante_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="name"/>
+									<field name="montant_1"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_liasse_passage_tree" model="ir.ui.view">
+	    <field name="name">view.liasse.passage.tree</field>
+	    <field name="model">liasse.passage</field>
+	    <field name="arch" type="xml">
+	        <tree string="Passage">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_liasse_passage" model="ir.actions.act_window">
+	    <field name="name">TABLEAU DE PASSAGE</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">liasse.passage</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_liasse_passage" parent="menu_tables_root" action="action_liasse_passage" />
+
+
+</odoo>

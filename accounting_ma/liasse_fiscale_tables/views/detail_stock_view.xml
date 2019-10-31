@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_detail_stock_form" model="ir.ui.view">
+	    <field name="name">view.detail.stock.form</field>
+	    <field name="model">detail.stock</field>
+	    <field name="arch" type="xml">
+	        <form string="ETAT DETAIL DES STOCKS">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="detail_stock_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="montant_brut_stock_final"/>
+									<field name="provisions_stock_final"/>
+									<field name="montant_net_stock_final"/>
+									<field name="montant_brut_stock_initial"/>
+									<field name="provisions_stock_initial"/>
+									<field name="montant_net_stock_initial"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_detail_stock_tree" model="ir.ui.view">
+	    <field name="name">view.detail.stock.tree</field>
+	    <field name="model">detail.stock</field>
+	    <field name="arch" type="xml">
+	        <tree string="ETAT DETAIL DES STOCKS">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_detail_stock" model="ir.actions.act_window">
+	    <field name="name">ETAT DETAIL DES STOCKS</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">detail.stock</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_detail_stock_id" parent="menu_tables_root" action="action_detail_stock" />
+</odoo>

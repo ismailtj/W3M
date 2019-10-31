@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_locations_baux_form" model="ir.ui.view">
+	    <field name="name">view.locations.baux.form</field>
+	    <field name="model">locations.baux</field>
+	    <field name="arch" type="xml">
+	        <form string="LOCATIONS ET BAUX AUTRES QUE LE CREDIT-BAIL">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="locations_baux_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="lieu_situation"/>
+									<field name="nom_prenom"/>
+									<field name="date_conclusion"/>
+									<field name="montant_annuel"/>
+									<field name="montant_loyer"/>
+									<field name="nature_contrat_bail"/>
+									<field name="nature_contrat_period"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_locations_baux_tree" model="ir.ui.view">
+	    <field name="name">view.locations.baux.tree</field>
+	    <field name="model">locations.baux</field>
+	    <field name="arch" type="xml">
+	        <tree string="LOCATIONS ET BAUX AUTRES QUE LE CREDIT-BAIL">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_locations_baux" model="ir.actions.act_window">
+	    <field name="name">LOCATIONS ET BAUX AUTRES QUE LE CREDIT-BAIL</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">locations.baux</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_locations_baux_id" parent="menu_tables_root" action="action_locations_baux" />
+</odoo>

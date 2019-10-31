@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_calcul_impot_form" model="ir.ui.view">
+	    <field name="name">view.calcul.impot.form</field>
+	    <field name="model">calcul.impot</field>
+	    <field name="arch" type="xml">
+	        <form string="Calcul impot">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="calcul_impot_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="ens_produit"/>
+									<field name="ens_produit_base_imposable"/>
+									<field name="ens_produit_numerateur_taxable"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_calcul_impot_tree" model="ir.ui.view">
+	    <field name="name">view.calcul.impot.tree</field>
+	    <field name="model">credit.bail</field>
+	    <field name="arch" type="xml">
+	        <tree string="Calcul impot">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_calcul_impot" model="ir.actions.act_window">
+	    <field name="name">CALCUL IMPOT</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">calcul.impot</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_calcul_impot_id" parent="menu_tables_root" action="action_calcul_impot" />
+</odoo>

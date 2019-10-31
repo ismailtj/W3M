@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <menuitem action="account.action_account_type_form" name="Types de comptes" id="menu_action_account_type_form"
+              parent="account.menu_finance_entries" sequence="21"/>
+</odoo>

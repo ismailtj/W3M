@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_repartition_capital_social_form" model="ir.ui.view">
+	    <field name="name">view.repartition.capital.social.form</field>
+	    <field name="model">repartition.capital.social</field>
+	    <field name="arch" type="xml">
+	        <form string="REPARTITION DU CAPITAL SOCIAL">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="repartition_capital_social_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="adresse"/>
+									<field name="n_cin"/>
+									<field name="n_if"/>
+									<field name="nbre_titre_exe_prec"/>
+									<field name="nbre_titre_exe_actuel"/>
+									<field name="valeur_nominal"/>
+									<field name="montant_capital_souscrit"/>
+									<field name="montant_capital_appele"/>
+									<field name="montant_capital_libere"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_repartition_capital_social_tree" model="ir.ui.view">
+	    <field name="name">view.repartition.capital.social.tree</field>
+	    <field name="model">repartition.capital.social</field>
+	    <field name="arch" type="xml">
+	        <tree string="REPARTITION DU CAPITAL SOCIAL">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_repartition_capital_social" model="ir.actions.act_window">
+	    <field name="name">REPARTITION DU CAPITAL SOCIAL</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">repartition.capital.social</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_repartition_capital_social_id" parent="menu_tables_root" action="action_repartition_capital_social" />
+</odoo>

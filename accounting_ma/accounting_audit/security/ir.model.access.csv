@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_audit_report,asset.audit.report,accounting_audit.model_audit_report,group_audit_liasse,1,1,1,1
+access_audit_line,asset.audit.line,accounting_audit.model_audit_line,group_audit_liasse,1,1,1,1
+access_audit_formula,asset.audit.formula,accounting_audit.model_audit_formula,group_audit_liasse,1,1,1,1
+access_audit_engin,asset.audit.engin,accounting_audit.model_audit_engin,group_audit_liasse,1,1,1,1

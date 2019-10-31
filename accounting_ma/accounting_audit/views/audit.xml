@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<!-- audit report-->
+		<record id="audit_report_view_tree" model="ir.ui.view">
+		    <field name="name">audit.report.view.tree</field>
+		    <field name="model">audit.report</field>
+		    <field name="arch" type="xml">
+		        <tree string="Rapports des tests">
+		            <field name="name"/>
+		        </tree>
+		    </field>
+		</record>
+
+        <record id="audit_report_view_form" model="ir.ui.view">
+			<field name="name">audit.report.view.form</field>
+			<field name="model">audit.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Rapport de test">
+					<header>
+						<button name="report_print" string="Imprimer" type="object" class="oe_highlight"/>
+					</header>
+					<group>
+                        <field name="name"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Tests">
+							<field name="rapport_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="name"/>
+								</tree>
+							</field>
+					    </page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+        <!-- audit engin -->
+		<record id="view_audit_engin_tree" model="ir.ui.view">
+		    <field name="name">view.audit.engin.tree</field>
+		    <field name="model">audit.engin</field>
+		    <field name="arch" type="xml">
+		        <tree string="Rapports">
+		            <field name="name"/>
+		        </tree>
+		    </field>
+		</record>
+
+        <record id="view_audit_engin_form" model="ir.ui.view">
+			<field name="name">audit.engin.form</field>
+			<field name="model">audit.engin</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Rapport">
+					<header>
+						<button name="report_print" string="Imprimer" type="object" class="oe_highlight"/>
+						<button name="print_values" string="Imprimer valeurs" type="object" class="oe_highlight"/>
+					</header>
+					<group>
+                        <field name="name"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Ligne">
+							<field name="line_ids" nolabel="1" colspan="4">
+								<tree>
+									<field name="sequence" widget="handle"/>
+									<field name="name"/>
+									<field name="type"/>
+								</tree>
+								<form>
+									<group>
+										<field name="name"/>
+										<field name="type"/>
+										<field name="op"/>
+										<field name="link_formula_id"/>
+										<field name="model_id"/>
+									</group>
+									<notebook>
+										<page string="Formules">
+											<field name="formulas_ids" nolabel="1" colspan="4">
+												<tree>
+													<field name="formula_id"/>
+													<field name="domain"/>
+													<field name="op"/>
+												</tree>
+												<form>
+													<group>
+														<field name="formula_id"/>
+														<field name="domain"/>
+														<field name="op"/>
+													</group>
+												</form>
+											</field>
+										</page>
+									</notebook>
+								</form>
+							</field>
+					    </page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record id="audit_report_group_action" model="ir.actions.act_window">
+			<field name="name">Rapport d'audit</field>
+			<field name="res_model">audit.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <record id="audit_report_engin_action" model="ir.actions.act_window">
+			<field name="name">Type de test</field>
+			<field name="res_model">audit.engin</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<menuitem id="audit_report_engin_menu_root" name="Rapport d'audit / Cohérence"/>
+		<menuitem id="audit_report_engin_menu_action_root" name="Rapport d'audit / Cohérence" parent="audit_report_engin_menu_root"/>
+		<menuitem id="audit_report_group_menu_id" parent="audit_report_engin_menu_action_root" action="audit_report_group_action" sequence="1"/>
+		<menuitem id="audit_report_engin_menu_id" parent="audit_report_engin_menu_action_root" action="audit_report_engin_action" sequence="2"/>
+
+    </data>
+</odoo>

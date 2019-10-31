@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo noupdate="1">
+    <record id="account.data_account_type_receivable" model="account.account.type">
+        <field name="close_method">unreconciled</field>
+    </record>
+    <record id="account.data_account_type_payable" model="account.account.type">
+        <field name="close_method">unreconciled</field>
+    </record>
+    <record id="account.data_account_type_liquidity" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_credit_card" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_current_assets" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_non_current_assets" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_prepayments" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_fixed_assets" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_current_liabilities" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_non_current_liabilities" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_equity" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_unaffected_earnings" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.data_account_type_other_income" model="account.account.type">
+        <field name="close_method">none</field>
+    </record>
+    <record id="account.data_account_type_revenue" model="account.account.type">
+        <field name="close_method">none</field>
+    </record>
+    <record id="account.data_account_type_depreciation" model="account.account.type">
+        <field name="close_method">none</field>
+    </record>
+    <record id="account.data_account_type_expenses" model="account.account.type">
+        <field name="close_method">none</field>
+    </record>
+    <record id="account.data_account_type_direct_costs" model="account.account.type">
+        <field name="close_method">none</field>
+    </record>
+    <record id="account.tres_actif" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+    <record id="account.tres_passif" model="account.account.type">
+        <field name="close_method">balance</field>
+    </record>
+
+</odoo>

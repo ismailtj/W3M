@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+        id="report_declaration_tva_xlsx"
+        model="tva.declaration"
+        string="Déclaration TVA"
+        report_type="xlsx"
+        name="declaration.tva.xlsx"
+        file="declaration.tva.xlsx"
+        attachment_use="False"
+        menu="True"
+        />
+    </data>
+</odoo>

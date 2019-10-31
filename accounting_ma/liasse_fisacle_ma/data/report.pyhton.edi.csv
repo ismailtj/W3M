@@ -1,0 +1,57 @@
+"id","name"
+"__export__.report_pyhton_edi_1","tab_liasse = env['liasse.passage'].search([('fy_n_id','=',ex_n)])
+dict_value = {}
+dict_value['817']= tab_liasse.benifice_net_1
+dict_value['820']= tab_liasse.perte_nette_1
+
+dict_value['839']= tab_liasse.benifice_brut_1
+dict_value['840']= tab_liasse.deficit_brut_1
+
+dict_value['845']= tab_liasse.exercice_n_4
+dict_value['846']= tab_liasse.exercice_n_3
+dict_value['847']= tab_liasse.exercice_n_2
+dict_value['848']= tab_liasse.exercice_n_1
+
+
+dict_value['6874']= tab_liasse.benifice_net_a_c_1
+dict_value['6875']= tab_liasse.deficit_net_b_1
+
+dict_value['855']= tab_liasse.amortissement_1
+
+dict_value['860']= tab_liasse.exercice_n_4_1_c
+dict_value['861']= tab_liasse.exercice_n_3_1_c
+dict_value['862']= tab_liasse.exercice_n_2_1_c
+dict_value['863']= tab_liasse.exercice_n_1_1_c
+
+list_table = []
+
+total_1 = 0.0
+total_2 = 0.0
+
+num_line = 1
+for line in tab_liasse.re_fy_courante_ids:
+    list_table.append({'821':line.name,'822':line.montant_1,'line':num_line})
+    total_1+=line.montant_1
+    num_line+=1
+
+num_line=1
+for line in tab_liasse.re_fy_non_courante_ids:
+    list_table.append({'824':line.name,'825':line.montant_1,'line':num_line})
+    total_1+=line.montant_1
+    num_line+=1
+
+num_line=1
+for line in tab_liasse.de_fy_courante_ids:
+    list_table.append({'827':line.name,'830':line.montant_1,'line':num_line})
+    total_2+=line.montant_1
+    num_line+=1
+
+num_line=1
+for line in tab_liasse.de_fy_non_courante_ids:
+    list_table.append({'829':line.name,'7830':line.montant_1,'line':num_line})
+    total_2+=line.montant_1
+    num_line+=1
+dict_value['833']= total_1
+dict_value['834']= total_2
+
+result = [dict_value,list_table]"

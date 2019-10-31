@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_credit_bail_form" model="ir.ui.view">
+	    <field name="name">view.credit.bail.form</field>
+	    <field name="model">credit.bail</field>
+	    <field name="arch" type="xml">
+	        <form string="Crédit Bail">
+				<group>
+					<field name="name"/>
+					<field name="fy_n_id" required="1" domain="[('type_id.fiscal_year','=',True)]"/>
+					<notebook colspan="4">
+						<page string="Lignes">
+							<field name="credit_bail_line_ids" nolabel="1" colspan="4">
+								<tree editable="bottom">
+									<field name="code"/>
+									<field name="name"/>
+									<field name="date_premiere_echeance"/>
+									<field name="duuree_contrat"/>
+									<field name="valeur_estimee"/>
+									<field name="duuree_theorique"/>
+									<field name="cumul_redevance"/>
+									<field name="montant_redevance"/>
+									<field name="redevance_restant_moins"/>
+									<field name="redevance_restant_plus"/>
+									<field name="prix_achat_fin_contrat"/>
+									<field name="observations"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id="view_credit_bail_tree" model="ir.ui.view">
+	    <field name="name">view.credit.bail.tree</field>
+	    <field name="model">credit.bail</field>
+	    <field name="arch" type="xml">
+	        <tree string="Crédit Bail">
+				<field name="name"/>
+				<field name="fy_n_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_credit_bail" model="ir.actions.act_window">
+	    <field name="name">BIENS EN CREDIT BAIL</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">credit.bail</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_tables_root" name="Tableaux à saisie manuelle" parent="odoo_excel_engin.report_engin_menu_root"/>
+	<menuitem id="menu_credit_bail_id" parent="menu_tables_root" action="action_credit_bail" />
+</odoo>

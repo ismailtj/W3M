@@ -1,0 +1,73 @@
+<openerp>
+    <data>
+
+        <record id="report_audit_print_view" model="ir.ui.view">
+            <field name="name">report.audit.print.form</field>
+            <field name="model">report.audit.print</field>
+            <field name="arch" type="xml">
+                <form string="Imprimer rapport">
+                    <group>
+                        <field name="report_id" options="{'no_create': True, 'no_open':True}"/>
+                        <field name="fy_n_id" domain="[('type_id.fiscal_year','=',True)]" options="{'no_create': True, 'no_open':True}"/>
+                    </group>
+                    <notebook colspan="4">
+						<page string="Ligne">
+								<field name="result_ids" nolabel="1" colspan="4">
+									<tree decoration-success="(status == True)" decoration-danger="(status == False)">
+										<field name="name"/>
+										<field name="status"/>
+										<field name="diff"/>
+									</tree>
+									<form>
+										<group>
+											<field name="name"/>
+											<field name="status"/>
+											<field name="diff"/>
+										</group>
+										<notebook>
+											<page string="Lignes audit">
+												<field name="line_ids" nolabel="1" colspan="4">
+													<tree>
+														<field name="name"/>
+														<field name="value"/>
+                                                        <button string="Detail" type="object" name="generate_link" class="btn-default"/>
+													</tree>
+													<form>
+														<group>
+															<field name="name"/>
+															<field name="value"/>
+														</group>
+													</form>
+												</field>
+											</page>
+										</notebook>
+									</form>
+								</field>
+					    </page>
+					</notebook>
+                    <footer>
+                        <button string="Generer" name="print_report" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_audit_print_view" model="ir.actions.act_window">
+        <field name="name">Imprimer rapport</field>
+        <field name="res_model">report.audit.print</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="report_audit_print_view"/>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="audit_menu_report_engin_print"
+        name="Imprimer rapport"
+        action="action_report_audit_print_view"
+        parent="audit_report_engin_menu_action_root"/>
+
+    </data>
+</openerp>
